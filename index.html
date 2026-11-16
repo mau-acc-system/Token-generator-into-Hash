@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hash Code Generator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1120;
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 30px 15px;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.header h1 {
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.panel {
+    background: #111c30;
+    border: 1px solid #263650;
+    border-radius: 15px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 170px;
+    background: #0b1425;
+    border: 1px solid #34445f;
+    border-radius: 9px;
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    resize: vertical;
+    outline: none;
+    font-family: monospace;
+}
+
+textarea:focus {
+    border-color: #3b82f6;
+}
+
+.counter {
+    text-align: right;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.algorithms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.algo {
+    background: #0b1425;
+    color: #cbd5e1;
+    border: 1px solid #34445f;
+    border-radius: 8px;
+    padding: 13px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.algo:hover {
+    border-color: #3b82f6;
+}
+
+.algo.active {
+    background: #1d4ed8;
+    border-color: #3b82f6;
+    color: white;
+}
+
+.result {
+    background: #0b1425;
+    border: 1px solid #34445f;
+    border-radius: 9px;
+    padding: 16px;
+    min-height: 90px;
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #60a5fa;
+    user-select: all;
+}
+
+.result.empty {
+    color: #64748b;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button.action {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.copy {
+    background: #2563eb;
+    color: white;
+}
+
+.clear {
+    background: #334155;
+    color: white;
+}
+
+.download {
+    background: #0f766e;
+    color: white;
+}
+
+.status {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #4ade80;
+    min-height: 16px;
+}
+
+.footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 25px;
+    line-height: 1.8;
+}
+
+@media(max-width:500px) {
+    body { padding: 20px 12px; }
+    .panel { padding: 17px; }
+    .header h1 { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">🔐</div>
+        <h1>HASH CODE GENERATOR</h1>
+        <p>Convert any text into a hash code instantly.</p>
+    </div>
+
+    <div class="panel">
+        <div class="section-title">INPUT TEXT</div>
+
+        <textarea id="inputText"
+        placeholder="Paste or type your text here..."></textarea>
+
+        <div class="counter">
+            <span id="charCount">0</span> characters
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="section-title">SELECT HASH ALGORITHM</div>
+
+        <div class="algorithms">
+            <button class="algo" data-algo="MD5">MD5</button>
+            <button class="algo" data-algo="SHA-1">SHA-1</button>
+            <button class="algo active" data-algo="SHA-256">SHA-256</button>
+            <button class="algo" data-algo="SHA-384">SHA-384</button>
+            <button class="algo" data-algo="SHA-512">SHA-512</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="section-title">
+            GENERATED HASH - <span id="selectedAlgo">SHA-256</span>
+        </div>
+
+        <div class="result empty" id="hashResult">
+            Your hash code will appear here...
+        </div>
+
+        <div class="actions">
+            <button class="action copy" id="copyBtn">
+                📋 Copy Hash
+            </button>
+
+            <button class="action download" id="downloadBtn">
+                ⬇ Download
+            </button>
+
+            <button class="action clear" id="clearBtn">
+                ✕ Clear
+            </button>
+        </div>
+
+        <div class="status" id="status"></div>
+    </div>
+
+    <div class="footer">
+        HASH CODE GENERATOR v1.0<br>
+        Client-side processing • No data uploaded<br>
+        © 2026
+    </div>
+
+</div>
+
+<script>
+const input = document.getElementById("inputText");
+const result = document.getElementById("hashResult");
+const charCount = document.getElementById("charCount");
+const status = document.getElementById("status");
+const selectedAlgo = document.getElementById("selectedAlgo");
+
+let algorithm = "SHA-256";
+let currentHash = "";
+let requestId = 0;
+
+// MD5 IMPLEMENTATION
+function md5(text) {
+    const bytes = new TextEncoder().encode(text);
+    const originalLength = bytes.length;
+    const paddedLength = Math.ceil((originalLength + 9) / 64) * 64;
+    const data = new Uint8Array(paddedLength);
+
+    data.set(bytes);
+    data[originalLength] = 128;
+
+    const bitLength = BigInt(originalLength) * 8n;
+
+    for (let i = 0; i < 8; i++) {
+        data[paddedLength - 8 + i] =
+            Number((bitLength >> BigInt(i * 8)) & 255n);
+    }
+
+    const shifts = [
+        7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
+        5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
+        4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
+        6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21
+    ];
+
+    const K = Array.from({length:64}, (_,i) =>
+        Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) >>> 0
+    );
+
+    let a0 = 0x67452301;
+    let b0 = 0xefcdab89;
+    let c0 = 0x98badcfe;
+    let d0 = 0x10325476;
+
+    function rotate(x, n) {
+        return (x << n) | (x >>> (32 - n));
+    }
+
+    for (let offset = 0; offset < paddedLength; offset += 64) {
+        const M = [];
+
+        for (let i = 0; i < 16; i++) {
+            const p = offset + i * 4;
+            M[i] = (
+                data[p] |
+                (data[p+1] << 8) |
+                (data[p+2] << 16) |
+                (data[p+3] << 24)
+            );
+        }
+
+        let A = a0, B = b0, C = c0, D = d0;
+
+        for (let i = 0; i < 64; i++) {
+            let F, g;
+
+            if (i < 16) {
+                F = (B & C) | (~B & D);
+                g = i;
+            } else if (i < 32) {
+                F = (D & B) | (~D & C);
+                g = (5*i + 1) % 16;
+            } else if (i < 48) {
+                F = B ^ C ^ D;
+                g = (3*i + 5) % 16;
+            } else {
+                F = C ^ (B | ~D);
+                g = (7*i) % 16;
+            }
+
+            const temp = D;
+            D = C;
+            C = B;
+
+            B = (B + rotate(
+                (A + F + K[i] + M[g]) | 0,
+                shifts[i]
+            )) | 0;
+
+            A = temp;
+        }
+
+        a0 = (a0 + A) | 0;
+        b0 = (b0 + B) | 0;
+        c0 = (c0 + C) | 0;
+        d0 = (d0 + D) | 0;
+    }
+
+    return [a0,b0,c0,d0].map(x =>
+        [0,8,16,24].map(n =>
+            ((x >>> n) & 255).toString(16).padStart(2,"0")
+        ).join("")
+    ).join("");
+}
+
+// HASH GENERATOR
+async function generateHash() {
+    const id = ++requestId;
+    const text = input.value;
+
+    charCount.textContent = text.length;
+
+    if (!text.length) {
+        currentHash = "";
+        result.textContent = "Your hash code will appear here...";
+        result.classList.add("empty");
+        status.textContent = "";
+        return;
+    }
+
+    result.textContent = "Generating...";
+    result.classList.remove("empty");
+
+    try {
+        let hash;
+
+        if (algorithm === "MD5") {
+            hash = md5(text);
+        } else {
+            if (!window.crypto || !window.crypto.subtle) {
+                throw new Error(
+                    "Web Crypto unavailable. Open using HTTPS or localhost."
+                );
+            }
+
+            const encoded = new TextEncoder().encode(text);
+
+            const buffer = await crypto.subtle.digest(
+                algorithm,
+                encoded
+            );
+
+            hash = Array.from(new Uint8Array(buffer))
+                .map(b => b.toString(16).padStart(2,"0"))
+                .join("");
+        }
+
+        if (id !== requestId) return;
+
+        currentHash = hash;
+        result.textContent = hash;
+        status.textContent = "✓ Hash generated successfully.";
+
+    } catch (error) {
+        if (id !== requestId) return;
+
+        currentHash = "";
+        result.textContent = error.message;
+        status.textContent = "";
+    }
+}
+
+// ALGORITHM SELECTION
+document.querySelectorAll(".algo").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".algo").forEach(b =>
+            b.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        algorithm = button.dataset.algo;
+        selectedAlgo.textContent = algorithm;
+
+        generateHash();
+    });
+});
+
+// AUTOMATIC CONVERSION
+input.addEventListener("input", generateHash);
+
+// COPY BUTTON
+document.getElementById("copyBtn").addEventListener("click", async () => {
+    if (!currentHash) {
+        status.textContent = "No hash available.";
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(currentHash);
+        status.textContent = "✓ Hash copied to clipboard!";
+    } catch {
+        status.textContent = "Copy unavailable. Select and copy the hash manually.";
+    }
+});
+
+// DOWNLOAD BUTTON
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    if (!currentHash) {
+        status.textContent = "No hash available.";
+        return;
+    }
+
+    const content =
+        "Algorithm: " + algorithm +
+        "\nInput: " + input.value +
+        "\nHash: " + currentHash;
+
+    const blob = new Blob([content], {
+        type: "text/plain;charset=utf-8"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = algorithm.toLowerCase() + "-hash.txt";
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    status.textContent = "✓ File downloaded.";
+});
+
+// CLEAR BUTTON
+document.getElementById("clearBtn").addEventListener("click", () => {
+    input.value = "";
+    charCount.textContent = "0";
+    currentHash = "";
+    result.textContent = "Your hash code will appear here...";
+    result.classList.add("empty");
+    status.textContent = "";
+    input.focus();
+});
+</script>
+
+</body>
+</html>
