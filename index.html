@@ -4,182 +4,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hash Code Generator</title>
+<meta name="theme-color" content="#101522">
+<title>HEX & HASH Converter</title>
 
 <style>
+:root {
+    --bg: #0b1020;
+    --panel: #141c2e;
+    --panel2: #1a253a;
+    --border: #293750;
+    --text: #edf2ff;
+    --muted: #91a0ba;
+    --blue: #648cff;
+    --cyan: #39d5dc;
+    --green: #43d49b;
+    --red: #ff6b78;
+}
+
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #0b1120;
-    color: #f1f5f9;
+    margin: 0;
     min-height: 100vh;
-    padding: 30px 15px;
+    background:
+        radial-gradient(ellipse at 50% -20%, #20365e 0%, transparent 55%),
+        var(--bg);
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    padding: 35px 18px;
 }
 
 .container {
-    max-width: 850px;
+    max-width: 950px;
     margin: auto;
 }
 
-.header {
+header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
 .logo {
-    font-size: 34px;
-    margin-bottom: 12px;
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 17px;
+    border-radius: 19px;
+    background: linear-gradient(135deg, #527bff, #36d5dc);
+    color: white;
+    font-size: 25px;
+    font-weight: 900;
+    box-shadow: 0 10px 35px #527bff35;
 }
 
-.header h1 {
-    font-size: 29px;
-    margin-bottom: 8px;
+h1 {
+    font-size: clamp(27px, 5vw, 38px);
+    margin: 0;
+    letter-spacing: -1.2px;
 }
 
-.header p {
-    color: #94a3b8;
+h1 span {
+    color: var(--cyan);
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-top: 10px;
     font-size: 14px;
 }
 
-.panel {
-    background: #111c30;
-    border: 1px solid #263650;
-    border-radius: 15px;
-    padding: 24px;
-    margin-bottom: 20px;
+.card {
+    background: linear-gradient(145deg, #172238, #111a2b);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 20px 65px #00000030;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #0d1526;
+    border: 1px solid var(--border);
+    padding: 5px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.tab {
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    color: var(--muted);
+    background: transparent;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tab.active {
+    color: white;
+    background: linear-gradient(110deg, #416bdb, #526fff);
+    box-shadow: 0 4px 15px #416bdb40;
 }
 
 .section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.section-title label {
+    font-weight: 700;
     font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 12px;
+}
+
+.counter {
+    font-size: 11px;
+    color: var(--muted);
 }
 
 textarea {
     width: 100%;
-    min-height: 170px;
-    background: #0b1425;
-    border: 1px solid #34445f;
-    border-radius: 9px;
-    padding: 15px;
-    color: white;
-    font-size: 15px;
+    min-height: 150px;
     resize: vertical;
+    background: #0b1322;
+    color: #d9e6ff;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 16px;
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+    line-height: 1.7;
     outline: none;
-    font-family: monospace;
-}
-
-textarea:focus {
-    border-color: #3b82f6;
-}
-
-.counter {
-    text-align: right;
-    color: #94a3b8;
-    font-size: 12px;
-    margin-top: 8px;
-}
-
-.algorithms {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 10px;
-}
-
-.algo {
-    background: #0b1425;
-    color: #cbd5e1;
-    border: 1px solid #34445f;
-    border-radius: 8px;
-    padding: 13px 8px;
-    cursor: pointer;
-    font-weight: bold;
     transition: .2s;
 }
 
-.algo:hover {
-    border-color: #3b82f6;
+textarea:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px #648cff18;
 }
 
-.algo.active {
-    background: #1d4ed8;
-    border-color: #3b82f6;
-    color: white;
+textarea::placeholder {
+    color: #61718e;
 }
 
-.result {
-    background: #0b1425;
-    border: 1px solid #34445f;
-    border-radius: 9px;
-    padding: 16px;
-    min-height: 90px;
-    overflow-wrap: anywhere;
-    font-family: monospace;
-    font-size: 13px;
-    line-height: 1.8;
-    color: #60a5fa;
-    user-select: all;
+.output {
+    background: #101b2c;
 }
 
-.result.empty {
-    color: #64748b;
+.output:focus {
+    border-color: var(--cyan);
 }
 
-.actions {
+.controls {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px;
+    margin: 17px 0 22px;
 }
 
-button.action {
-    border: none;
-    border-radius: 8px;
-    padding: 12px 18px;
+button, select {
+    font-family: inherit;
+}
+
+.action {
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px 17px;
+    color: var(--text);
+    background: var(--panel2);
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 650;
     font-size: 13px;
+    transition: .2s;
 }
 
-.copy {
-    background: #2563eb;
-    color: white;
+.action:hover {
+    border-color: var(--blue);
+    transform: translateY(-1px);
 }
 
-.clear {
-    background: #334155;
+.primary {
+    background: linear-gradient(110deg, #4776ed, #5576ff);
+    border: none;
     color: white;
+    flex: 1;
 }
 
-.download {
-    background: #0f766e;
+.primary:hover {
+    box-shadow: 0 5px 20px #4776ed45;
+}
+
+.cyan {
+    background: linear-gradient(110deg, #159fae, #27c7ce);
+    border: none;
     color: white;
+    flex: 1;
+}
+
+.green {
+    color: var(--green);
+}
+
+.red {
+    color: var(--red);
+}
+
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    background: #0b1322;
+    color: white;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.hash-info {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #1c2c43;
+    border: 1px solid #30435d;
+    padding: 13px;
+    border-radius: 10px;
+    color: #a9bdd9;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 18px;
+}
+
+.hash-info strong {
+    color: var(--cyan);
 }
 
 .status {
-    margin-top: 12px;
+    min-height: 20px;
     font-size: 12px;
-    color: #4ade80;
-    min-height: 16px;
+    color: var(--green);
+    margin-top: 10px;
 }
 
-.footer {
+.hidden {
+    display: none;
+}
+
+footer {
     text-align: center;
-    color: #64748b;
-    font-size: 12px;
     margin-top: 25px;
-    line-height: 1.8;
+    color: #71809a;
+    font-size: 12px;
 }
 
-@media(max-width:500px) {
-    body { padding: 20px 12px; }
-    .panel { padding: 17px; }
-    .header h1 { font-size: 23px; }
+footer span {
+    color: var(--cyan);
+}
+
+@media(max-width: 600px) {
+    body { padding: 25px 12px; }
+    .card { padding: 16px; }
+    textarea { min-height: 130px; font-size: 12px; }
+    .controls { gap: 8px; }
+    .action { padding: 11px 12px; }
 }
 </style>
 </head>
@@ -188,96 +282,339 @@ button.action {
 
 <div class="container">
 
-    <div class="header">
-        <div class="logo">🔐</div>
-        <h1>HASH CODE GENERATOR</h1>
-        <p>Convert any text into a hash code instantly.</p>
+<header>
+    <div class="logo">H#</div>
+    <h1>HEX <span>&</span> HASH Converter</h1>
+    <div class="subtitle">
+        A simple and powerful text encoding and hashing tool.
+    </div>
+</header>
+
+<div class="card">
+
+    <div class="tabs">
+        <button class="tab active" id="hexTab" onclick="switchMode('hex')">
+            HEX Converter
+        </button>
+        <button class="tab" id="hashTab" onclick="switchMode('hash')">
+            HASH Generator
+        </button>
     </div>
 
-    <div class="panel">
-        <div class="section-title">INPUT TEXT</div>
+    <!-- HEX SECTION -->
 
-        <textarea id="inputText"
-        placeholder="Paste or type your text here..."></textarea>
+    <section id="hexSection">
 
-        <div class="counter">
-            <span id="charCount">0</span> characters
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="section-title">SELECT HASH ALGORITHM</div>
-
-        <div class="algorithms">
-            <button class="algo" data-algo="MD5">MD5</button>
-            <button class="algo" data-algo="SHA-1">SHA-1</button>
-            <button class="algo active" data-algo="SHA-256">SHA-256</button>
-            <button class="algo" data-algo="SHA-384">SHA-384</button>
-            <button class="algo" data-algo="SHA-512">SHA-512</button>
-        </div>
-    </div>
-
-    <div class="panel">
         <div class="section-title">
-            GENERATED HASH - <span id="selectedAlgo">SHA-256</span>
+            <label>Conversion Mode</label>
         </div>
 
-        <div class="result empty" id="hashResult">
-            Your hash code will appear here...
+        <select id="hexMode">
+            <option value="encode">Text → HEX Encode</option>
+            <option value="decode">HEX → Text Decode</option>
+        </select>
+
+        <div class="section-title">
+            <label id="hexInputLabel">Input Text</label>
+            <span class="counter" id="hexCount">0 characters</span>
         </div>
 
-        <div class="actions">
-            <button class="action copy" id="copyBtn">
-                📋 Copy Hash
-            </button>
+        <textarea id="hexInput"
+            placeholder="Enter or paste your text here..."></textarea>
 
-            <button class="action download" id="downloadBtn">
-                ⬇ Download
+        <div class="controls">
+            <button class="action primary" onclick="convertHex()">
+                Convert
             </button>
+            <button class="action" onclick="sampleHex()">Sample</button>
+            <button class="action" onclick="clearHex()">Clear</button>
+        </div>
 
-            <button class="action clear" id="clearBtn">
-                ✕ Clear
+        <div class="section-title">
+            <label>Output Result</label>
+            <span class="counter" id="hexOutputCount">0 characters</span>
+        </div>
+
+        <textarea id="hexOutput" class="output"
+            placeholder="Your conversion result will appear here..."
+            readonly></textarea>
+
+        <div class="controls">
+            <button class="action cyan" onclick="copyResult('hexOutput')">
+                Copy Result
             </button>
         </div>
 
-        <div class="status" id="status"></div>
-    </div>
+        <div class="status" id="hexStatus"></div>
 
-    <div class="footer">
-        HASH CODE GENERATOR v1.0<br>
-        Client-side processing • No data uploaded<br>
-        © 2026
-    </div>
+    </section>
+
+    <!-- HASH SECTION -->
+
+    <section id="hashSection" class="hidden">
+
+        <div class="section-title">
+            <label>Hash Algorithm</label>
+        </div>
+
+        <select id="hashAlgorithm">
+            <option value="SHA-256">SHA-256</option>
+            <option value="SHA-384">SHA-384</option>
+            <option value="SHA-512">SHA-512</option>
+            <option value="SHA-1">SHA-1</option>
+            <option value="MD5">MD5</option>
+        </select>
+
+        <div class="section-title">
+            <label>Input Text</label>
+            <span class="counter" id="hashCount">0 characters</span>
+        </div>
+
+        <textarea id="hashInput"
+            placeholder="Enter or paste your text here..."></textarea>
+
+        <div class="controls">
+            <button class="action primary" onclick="generateHash()">
+                Generate Hash
+            </button>
+            <button class="action" onclick="sampleHash()">Sample</button>
+            <button class="action" onclick="clearHash()">Clear</button>
+        </div>
+
+        <div class="section-title">
+            <label>Hash Result</label>
+            <span class="counter" id="hashOutputCount">0 characters</span>
+        </div>
+
+        <textarea id="hashOutput" class="output"
+            placeholder="Your hash result will appear here..."
+            readonly></textarea>
+
+        <div class="controls">
+            <button class="action cyan" onclick="copyResult('hashOutput')">
+                Copy Hash
+            </button>
+        </div>
+
+        <div class="status" id="hashStatus"></div>
+
+        <div class="hash-info">
+            <span>ⓘ</span>
+            <div>
+                <strong>Important:</strong> Hashing is a one-way operation.
+                You cannot directly convert a hash back into its original
+                text. MD5 and SHA-1 are provided for compatibility,
+                not for security-sensitive applications.
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<footer>
+    HEX & HASH Converter <span>•</span> Free Online Utility<br><br>
+    All conversions are processed in your browser.
+</footer>
 
 </div>
 
 <script>
-const input = document.getElementById("inputText");
-const result = document.getElementById("hashResult");
-const charCount = document.getElementById("charCount");
-const status = document.getElementById("status");
-const selectedAlgo = document.getElementById("selectedAlgo");
 
-let algorithm = "SHA-256";
-let currentHash = "";
-let requestId = 0;
+// ====================================
+// MODE SWITCHING
+// ====================================
 
-// MD5 IMPLEMENTATION
-function md5(text) {
+function switchMode(mode) {
+
+    const isHex = mode === "hex";
+
+    document.getElementById("hexSection").classList.toggle("hidden", !isHex);
+    document.getElementById("hashSection").classList.toggle("hidden", isHex);
+
+    document.getElementById("hexTab").classList.toggle("active", isHex);
+    document.getElementById("hashTab").classList.toggle("active", !isHex);
+}
+
+// ====================================
+// HEX CONVERTER
+// ====================================
+
+const hexInput = document.getElementById("hexInput");
+const hexOutput = document.getElementById("hexOutput");
+const hexMode = document.getElementById("hexMode");
+
+function textToHex(text) {
+
     const bytes = new TextEncoder().encode(text);
-    const originalLength = bytes.length;
-    const paddedLength = Math.ceil((originalLength + 9) / 64) * 64;
+
+    return Array.from(bytes)
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("")
+        .toUpperCase();
+}
+
+function hexToText(hex) {
+
+    const cleanHex = hex.replace(/\s+/g, "");
+
+    if (!/^[0-9a-fA-F]*$/.test(cleanHex)) {
+        throw new Error("Invalid HEX characters. Use only 0-9 and A-F.");
+    }
+
+    if (cleanHex.length % 2 !== 0) {
+        throw new Error("Invalid HEX length. HEX must contain an even number of characters.");
+    }
+
+    const bytes = new Uint8Array(cleanHex.length / 2);
+
+    for (let i = 0; i < cleanHex.length; i += 2) {
+        bytes[i / 2] = parseInt(cleanHex.substring(i, i + 2), 16);
+    }
+
+    return new TextDecoder("utf-8").decode(bytes);
+}
+
+function convertHex() {
+
+    const text = hexInput.value;
+    const mode = hexMode.value;
+    const status = document.getElementById("hexStatus");
+
+    try {
+
+        if (mode === "encode") {
+            hexOutput.value = textToHex(text);
+        } else {
+            hexOutput.value = hexToText(text);
+        }
+
+        status.textContent = "✓ Conversion completed successfully.";
+        status.className = "status green";
+
+    } catch (error) {
+
+        hexOutput.value = "";
+        status.textContent = "✕ " + error.message;
+        status.className = "status red";
+    }
+
+    updateHexCount();
+}
+
+function updateHexCount() {
+
+    document.getElementById("hexCount").textContent =
+        hexInput.value.length + " characters";
+
+    document.getElementById("hexOutputCount").textContent =
+        hexOutput.value.length + " characters";
+}
+
+function clearHex() {
+
+    hexInput.value = "";
+    hexOutput.value = "";
+    document.getElementById("hexStatus").textContent = "";
+
+    updateHexCount();
+}
+
+function sampleHex() {
+
+    hexInput.value = hexMode.value === "encode"
+        ? "Hello World!"
+        : "48656C6C6F20576F726C6421";
+
+    convertHex();
+}
+
+// ====================================
+// HASH GENERATOR
+// ====================================
+
+const hashInput = document.getElementById("hashInput");
+const hashOutput = document.getElementById("hashOutput");
+
+async function generateHash() {
+
+    const text = hashInput.value;
+    const algorithm = document.getElementById("hashAlgorithm").value;
+    const status = document.getElementById("hashStatus");
+
+    if (text.length === 0) {
+        hashOutput.value = "";
+        status.textContent = "Please enter text first.";
+        status.className = "status red";
+        updateHashCount();
+        return;
+    }
+
+    status.textContent = "Generating hash...";
+    status.className = "status";
+
+    try {
+
+        let result;
+
+        if (algorithm === "MD5") {
+
+            result = md5(text);
+
+        } else {
+
+            if (!window.crypto || !window.crypto.subtle) {
+                throw new Error("Web Crypto unavailable. Open this website using HTTPS.");
+            }
+
+            const data = new TextEncoder().encode(text);
+
+            const hashBuffer = await crypto.subtle.digest(algorithm, data);
+
+            result = Array.from(new Uint8Array(hashBuffer))
+                .map(byte => byte.toString(16).padStart(2, "0"))
+                .join("")
+                .toUpperCase();
+        }
+
+        hashOutput.value = result;
+
+        status.textContent = "✓ " + algorithm + " generated successfully.";
+        status.className = "status green";
+
+    } catch (error) {
+
+        hashOutput.value = "";
+        status.textContent = "✕ " + error.message;
+        status.className = "status red";
+    }
+
+    updateHashCount();
+}
+
+// ====================================
+// MD5 IMPLEMENTATION
+// Pure JavaScript - No external library
+// ====================================
+
+function md5(text) {
+
+    const input = new TextEncoder().encode(text);
+
+    const length = input.length;
+    const paddedLength = Math.ceil((length + 9) / 64) * 64;
+
     const data = new Uint8Array(paddedLength);
 
-    data.set(bytes);
-    data[originalLength] = 128;
+    data.set(input);
+    data[length] = 0x80;
 
-    const bitLength = BigInt(originalLength) * 8n;
+    const view = new DataView(data.buffer);
 
-    for (let i = 0; i < 8; i++) {
-        data[paddedLength - 8 + i] =
-            Number((bitLength >> BigInt(i * 8)) & 255n);
-    }
+    const bitLength = BigInt(length) * 8n;
+
+    view.setUint32(paddedLength - 8, Number(bitLength & 0xffffffffn), true);
+    view.setUint32(paddedLength - 4, Number((bitLength >> 32n) & 0xffffffffn), true);
 
     const shifts = [
         7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
@@ -286,61 +623,60 @@ function md5(text) {
         6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21
     ];
 
-    const K = Array.from({length:64}, (_,i) =>
-        Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) >>> 0
-    );
+    const constants = [];
+
+    for (let i = 0; i < 64; i++) {
+        constants.push(
+            Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) >>> 0
+        );
+    }
 
     let a0 = 0x67452301;
     let b0 = 0xefcdab89;
     let c0 = 0x98badcfe;
     let d0 = 0x10325476;
 
-    function rotate(x, n) {
-        return (x << n) | (x >>> (32 - n));
-    }
-
     for (let offset = 0; offset < paddedLength; offset += 64) {
-        const M = [];
 
-        for (let i = 0; i < 16; i++) {
-            const p = offset + i * 4;
-            M[i] = (
-                data[p] |
-                (data[p+1] << 8) |
-                (data[p+2] << 16) |
-                (data[p+3] << 24)
-            );
-        }
-
-        let A = a0, B = b0, C = c0, D = d0;
+        let A = a0;
+        let B = b0;
+        let C = c0;
+        let D = d0;
 
         for (let i = 0; i < 64; i++) {
+
             let F, g;
 
             if (i < 16) {
                 F = (B & C) | (~B & D);
                 g = i;
-            } else if (i < 32) {
+            }
+            else if (i < 32) {
                 F = (D & B) | (~D & C);
-                g = (5*i + 1) % 16;
-            } else if (i < 48) {
+                g = (5 * i + 1) % 16;
+            }
+            else if (i < 48) {
                 F = B ^ C ^ D;
-                g = (3*i + 5) % 16;
-            } else {
+                g = (3 * i + 5) % 16;
+            }
+            else {
                 F = C ^ (B | ~D);
-                g = (7*i) % 16;
+                g = (7 * i) % 16;
             }
 
-            const temp = D;
+            const word = view.getUint32(offset + g * 4, true);
+
+            const sum = (A + F + constants[i] + word) | 0;
+
+            const rotated = (sum << shifts[i]) |
+                (sum >>> (32 - shifts[i]));
+
+            const next = (B + rotated) | 0;
+
+            A = D;
             D = C;
             C = B;
-
-            B = (B + rotate(
-                (A + F + K[i] + M[g]) | 0,
-                shifts[i]
-            )) | 0;
-
-            A = temp;
+            B = next;
         }
 
         a0 = (a0 + A) | 0;
@@ -349,142 +685,110 @@ function md5(text) {
         d0 = (d0 + D) | 0;
     }
 
-    return [a0,b0,c0,d0].map(x =>
-        [0,8,16,24].map(n =>
-            ((x >>> n) & 255).toString(16).padStart(2,"0")
-        ).join("")
-    ).join("");
+    function littleEndianHex(number) {
+
+        return [0, 8, 16, 24]
+            .map(shift => ((number >>> shift) & 255)
+            .toString(16).padStart(2, "0"))
+            .join("");
+    }
+
+    return (
+        littleEndianHex(a0) +
+        littleEndianHex(b0) +
+        littleEndianHex(c0) +
+        littleEndianHex(d0)
+    ).toUpperCase();
 }
 
-// HASH GENERATOR
-async function generateHash() {
-    const id = ++requestId;
-    const text = input.value;
+function updateHashCount() {
 
-    charCount.textContent = text.length;
+    document.getElementById("hashCount").textContent =
+        hashInput.value.length + " characters";
 
-    if (!text.length) {
-        currentHash = "";
-        result.textContent = "Your hash code will appear here...";
-        result.classList.add("empty");
-        status.textContent = "";
+    document.getElementById("hashOutputCount").textContent =
+        hashOutput.value.length + " characters";
+}
+
+function clearHash() {
+
+    hashInput.value = "";
+    hashOutput.value = "";
+    document.getElementById("hashStatus").textContent = "";
+
+    updateHashCount();
+}
+
+function sampleHash() {
+
+    hashInput.value = "Hello World!";
+    generateHash();
+}
+
+// ====================================
+// COPY TO CLIPBOARD
+// ====================================
+
+async function copyResult(id) {
+
+    const output = document.getElementById(id);
+    const status = id === "hexOutput"
+        ? document.getElementById("hexStatus")
+        : document.getElementById("hashStatus");
+
+    if (!output.value) {
+        status.textContent = "Nothing to copy.";
+        status.className = "status red";
         return;
     }
 
-    result.textContent = "Generating...";
-    result.classList.remove("empty");
-
     try {
-        let hash;
 
-        if (algorithm === "MD5") {
-            hash = md5(text);
-        } else {
-            if (!window.crypto || !window.crypto.subtle) {
-                throw new Error(
-                    "Web Crypto unavailable. Open using HTTPS or localhost."
-                );
-            }
+        await navigator.clipboard.writeText(output.value);
 
-            const encoded = new TextEncoder().encode(text);
-
-            const buffer = await crypto.subtle.digest(
-                algorithm,
-                encoded
-            );
-
-            hash = Array.from(new Uint8Array(buffer))
-                .map(b => b.toString(16).padStart(2,"0"))
-                .join("");
-        }
-
-        if (id !== requestId) return;
-
-        currentHash = hash;
-        result.textContent = hash;
-        status.textContent = "✓ Hash generated successfully.";
+        status.textContent = "✓ Copied to clipboard!";
+        status.className = "status green";
 
     } catch (error) {
-        if (id !== requestId) return;
 
-        currentHash = "";
-        result.textContent = error.message;
-        status.textContent = "";
+        output.focus();
+        output.select();
+
+        try {
+            document.execCommand("copy");
+            status.textContent = "✓ Copied to clipboard!";
+            status.className = "status green";
+        } catch {
+            status.textContent = "Unable to copy. Please select and copy manually.";
+            status.className = "status red";
+        }
     }
 }
 
-// ALGORITHM SELECTION
-document.querySelectorAll(".algo").forEach(button => {
-    button.addEventListener("click", () => {
-        document.querySelectorAll(".algo").forEach(b =>
-            b.classList.remove("active")
-        );
+// ====================================
+// LIVE COUNTERS AND MODE LABELS
+// ====================================
 
-        button.classList.add("active");
+hexInput.addEventListener("input", updateHexCount);
+hashInput.addEventListener("input", updateHashCount);
 
-        algorithm = button.dataset.algo;
-        selectedAlgo.textContent = algorithm;
+hexMode.addEventListener("change", function() {
 
-        generateHash();
-    });
+    const decode = this.value === "decode";
+
+    document.getElementById("hexInputLabel").textContent =
+        decode ? "HEX Input" : "Input Text";
+
+    hexInput.placeholder = decode
+        ? "Paste HEX code here..."
+        : "Enter or paste your text here...";
+
+    hexOutput.value = "";
+    document.getElementById("hexStatus").textContent = "";
+
+    updateHexCount();
 });
 
-// AUTOMATIC CONVERSION
-input.addEventListener("input", generateHash);
-
-// COPY BUTTON
-document.getElementById("copyBtn").addEventListener("click", async () => {
-    if (!currentHash) {
-        status.textContent = "No hash available.";
-        return;
-    }
-
-    try {
-        await navigator.clipboard.writeText(currentHash);
-        status.textContent = "✓ Hash copied to clipboard!";
-    } catch {
-        status.textContent = "Copy unavailable. Select and copy the hash manually.";
-    }
-});
-
-// DOWNLOAD BUTTON
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    if (!currentHash) {
-        status.textContent = "No hash available.";
-        return;
-    }
-
-    const content =
-        "Algorithm: " + algorithm +
-        "\nInput: " + input.value +
-        "\nHash: " + currentHash;
-
-    const blob = new Blob([content], {
-        type: "text/plain;charset=utf-8"
-    });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = algorithm.toLowerCase() + "-hash.txt";
-    link.click();
-
-    URL.revokeObjectURL(url);
-
-    status.textContent = "✓ File downloaded.";
-});
-
-// CLEAR BUTTON
-document.getElementById("clearBtn").addEventListener("click", () => {
-    input.value = "";
-    charCount.textContent = "0";
-    currentHash = "";
-    result.textContent = "Your hash code will appear here...";
-    result.classList.add("empty");
-    status.textContent = "";
-    input.focus();
-});
 </script>
 
 </body>
